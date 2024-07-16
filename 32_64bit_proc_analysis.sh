@@ -2,15 +2,15 @@
 
 count_32bit=0
 count_64bit=0
-output_32bit="/tmp/execution_analysis_32bit"
-output_64bit="/tmp/execution_analysis_64bit"
+output_32bit="/tmp/log/execution_analysis_32bit"
+output_64bit="/var/log/execution_analysis_64bit"
 
 for pid in $(ps -e -o pid); do
   exe=$(readlink -f /proc/$pid/exe 2>/dev/null)
   if [ -n "$exe" ]; then
     arch=$(file "$exe" | grep -o -e '32-bit' -e '64-bit')
-    # would recommend storing this output into a file to reference. I store it in /tmp/ as i thought it was the most universal place to put temporary data
-    echo "PID: $pid, Executable: $exe, Architecture: $arch" > /tmp/executable_anaylsis_output
+    # would recommend storing this output into a file to reference. I store it in /var/log/ as it is universally recognised for storing logs.
+    echo "PID: $pid, Executable: $exe, Architecture: $arch" > /var/log/executable_anaylsis_output
     if [[ $arch == *"32-bit"* ]]; then
       ((count_32bit++))
       echo "PID: $pid, Executable: $exe, Architecture: $arch" >> "$output_32bit"
